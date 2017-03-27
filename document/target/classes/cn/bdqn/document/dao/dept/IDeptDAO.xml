@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.document.dao.dept.IDeptDAO">
+
+	<!-- 保存部门 -->
+	<insert id="saveDept">
+		INSERT INTO dept(name) VALUES(#{name})
+	</insert>
+	
+	<!-- 更新部门 -->
+	<update id="updateDept">
+		UPDATE dept SET name=#{name} WHERE id=#{id}
+	</update>
+
+	<!-- 删除部门 -->
+	<delete id="deleteDept">
+		DELETE FROM dept WHERE id=#{id}
+	</delete>
+	
+	<!-- 查询全部部门列表 -->
+	<select id="findDept" resultType="Dept">
+		SELECT id,name FROM dept
+		<where>
+			<if test="name!=null">name LIKE #{name}</if>
+		</where> 
+		ORDER BY id DESC
+	</select>
+	
+	<!-- 根据ID获取单个文档 -->
+	<select id="getDept" resultType="Dept">
+		SELECT id,name FROM dept 
+		WHERE id=#{id}
+	</select>
+	
+	<!-- 根据部门编号升序排序，获得第一个部门 -->
+	<select id="getFirstDept" resultType="Dept">
+		SELECT id,name FROM dept ORDER BY id LIMIT 1
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+</mapper>

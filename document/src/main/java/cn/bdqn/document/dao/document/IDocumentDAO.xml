@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.document.dao.document.IDocumentDAO">
+
+	<insert id="saveDocument">
+		INSERT INTO document(scope,did,eid,cid,title,note,fileName,length,del,addTime)
+		VALUES(#{scope},#{did},#{eid},#{cid},#{title},#{note},#{fileName},#{length},#{del},#{addTime})	
+	</insert>
+	
+	<select id="findDocument" resultType="Document">
+		SELECT 
+			d.id,
+			d.title,
+			e.realName AS ename,
+			c.name AS cname
+		FROM document d INNER JOIN emp e ON d.eid=e.id
+						INNER JOIN category c ON d.cid=c.id	
+		<where>
+			d.del=0
+			and d.scope=#{scope}
+			<if test="eid!=null">and d.eid=#{eid}</if>
+			<if test="did!=null">and d.did=#{did}</if>
+			<if test="cid!=null and cid!=0">and d.cid=#{cid}</if>
+			<if test="cid==0">and d.cid is null</if>
+			<if test="title!=null">and d.title LIKE #{title}</if>
+		</where>
+		ORDER BY d.id DESC
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+

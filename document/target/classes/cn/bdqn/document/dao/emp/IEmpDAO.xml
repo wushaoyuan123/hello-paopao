@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.document.dao.emp.IEmpDAO">
+
+	<!-- 根据用户名获取单个用户对象 -->
+	<select id="getEmp" resultType="Emp">
+		SELECT
+			id,
+			did,
+			userName,
+			password,
+			salt,
+			realName,
+			sysPrivs,
+			catPrivs,
+			docPrivs,
+			addTime,
+			admin
+		FROM emp WHERE userName=#{userName}			
+	</select>
+	
+	<!-- 分页查询员工列表 -->
+	<select id="findEmp" resultType="Emp">
+		SELECT
+			e.id,
+			e.realName,
+			e.admin,
+			d.name AS dname
+		FROM emp e LEFT JOIN dept d ON e.did=d.id
+		<where>
+			<if test="did!=null">
+				e.did=#{did}
+			</if>
+			<if test="realName!=null">
+				and e.realName LIKE #{realName}
+			</if>
+		</where>
+		ORDER BY e.id desc	
+	</select>
+	
+	<!-- 根据ID获取单个员工 -->
+	<select id="getEmpById" resultType="Emp">
+		SELECT id,did,userName,realName,sysPrivs,catPrivs,docPrivs,admin
+		FROM emp WHERE id=#{id}
+	</select>
+	
+		
+	<!-- 保存员工 -->
+	<insert id="saveEmp">
+		INSERT INTO emp(did,userName,password,salt,realName,sysPrivs,catPrivs,docPrivs,addTime,admin)
+		VALUES(#{did},#{userName},#{password},#{salt},#{realName},#{sysPrivs},#{catPrivs},#{docPrivs},#{addTime},#{admin})	
+	</insert>
+	
+	<!-- 根据部门编号查询员工数量 -->
+	<select id="getEmpCount" resultType="_int">
+		SELECT COUNT(*) FROM emp WHERE did=#{did}
+	</select>
+	
+	<!-- 更新员工 -->
+	<update id="updateEmp">
+		UPDATE emp SET
+			userName=#{userName},
+			realName=#{realName},
+			did=#{did},
+			sysPrivs=#{sysPrivs},
+			catPrivs=#{catPrivs},
+			docPrivs=#{docPrivs}
+		WHERE
+			id=#{id}	
+	</update>
+	
+	<!-- 删除员工 -->
+	<delete id="deleteEmp">
+		DELETE FROM emp WHERE id=#{id}
+	</delete>
+	
+	<!-- 更新密码 -->
+	<update id="updatePassword">
+		UPDATE emp SET 
+			password=#{password},
+			salt=#{salt}
+		WHERE id=#{id}	
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+
+  <display-name>Archetype Created Web Application</display-name>
+  
+  <!-- Spring监听器 -->
+  <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- SpringMVC核心控制器 -->
+  <servlet>
+  	<servlet-name>MVC</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>MVC</servlet-name>
+  	<url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 字符集过滤器 -->
+  <filter>
+  	<filter-name>charset</filter-name>
+  	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  	<!-- 设置字符集编码 -->
+  	<init-param>
+  		<param-name>encoding</param-name>
+  		<param-value>utf-8</param-value>
+  	</init-param>
+  	<!-- 如果请求的字符集编码已经被其他过滤器设置过，是否强行重新设置字符集编码 -->
+  	<init-param>
+  		<param-name>forceEncoding</param-name>
+  		<param-value>true</param-value>
+  	</init-param>
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name>charset</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <!-- 配置验证码Servlet -->
+  <servlet>
+  	<servlet-name>kaptcha</servlet-name>
+    <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+    <!-- 是否显示边框 -->
+    <init-param>           
+        <param-name>kaptcha.border</param-name>  
+        <param-value>yes</param-value>  
+    </init-param>    	
+    <!-- 边框颜色，可以使用红,绿,蓝色值设置，或使用red,blue,green色名设置 -->
+    <init-param>           
+        <param-name>kaptcha.border.color</param-name>  
+        <param-value>gray</param-value>  
+    </init-param>
+    <!-- 边框粗细，必须大于0 -->
+    <init-param>            
+        <param-name>kaptcha.border.thickness</param-name>  
+        <param-value>1</param-value>  
+    </init-param>  
+    <!-- 宽度 -->
+    <init-param>           
+        <param-name>kaptcha.image.width</param-name>  
+        <param-value>204</param-value>  
+    </init-param>
+    <!-- 高度 -->  
+    <init-param>           
+        <param-name>kaptcha.image.height</param-name>  
+        <param-value>40</param-value>  
+    </init-param>
+    <!-- 字符生成器 -->
+    <init-param>           
+        <param-name>kaptcha.textproducer.impl</param-name>  
+        <param-value>com.google.code.kaptcha.text.impl.DefaultTextCreator</param-value>  
+    </init-param>
+   	<!-- 用来生成验证码的字符 -->
+    <init-param>            
+        <param-name>kaptcha.textproducer.char.string</param-name>  
+        <param-value>acdefghijkmnprstuvwxyz234578</param-value>  
+    </init-param>  
+    <!-- 验证码长度 -->
+    <init-param>           
+        <param-name>kaptcha.textproducer.char.length</param-name>  
+        <param-value>4</param-value>  
+    </init-param> 
+    <!-- 字体列表，用逗号隔开 --> 
+    <init-param>           
+        <param-name>kaptcha.textproducer.font.names</param-name>  
+        <param-value>Arial, Courier</param-value>  
+    </init-param> 
+    <!-- 字号大小 --> 
+    <init-param>  
+        <description>The size of the font to use. </description>  
+        <param-name>kaptcha.textproducer.font.size</param-name>  
+        <param-value>30</param-value>  
+    </init-param> 
+    <!-- 字体颜色，红,绿,蓝色值或色名--> 
+    <init-param>           
+        <param-name>kaptcha.textproducer.font.color</param-name>  
+        <param-value>yellow</param-value>  
+    </init-param> 
+    <!-- 噪线生成器 --> 
+    <init-param>           
+        <param-name>kaptcha.noise.impl</param-name>  
+        <param-value>com.google.code.kaptcha.impl.DefaultNoise </param-value>  
+    </init-param>  
+    <!-- 噪线颜色 -->
+    <init-param>  
+        <description>The noise color. Legal values are r,g,b. </description>  
+        <param-name>kaptcha.noise.color</param-name>  
+        <param-value>red</param-value>  
+    </init-param>    
+    <!-- 验证码样式 -->
+    <init-param>           
+        <param-name>kaptcha.obscurificator.impl</param-name>  
+        <param-value>com.google.code.kaptcha.impl.WaterRipple</param-value>  
+    </init-param> 
+    <!-- 验证码背景 --> 
+    <init-param>           
+        <param-name>kaptcha.background.impl</param-name>  
+        <param-value>com.google.code.kaptcha.impl.DefaultBackground</param-value>  
+    </init-param>
+    <!-- 验证码渐进色 -->  
+    <init-param>  
+        <param-name>kaptcha.background.clear.from</param-name>  
+        <param-value>white</param-value>  
+    </init-param>  
+    <init-param>           
+        <param-name>kaptcha.background.clear.to</param-name>  
+        <param-value>gray</param-value>  
+    </init-param>                        
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>kaptcha</servlet-name>
+  	<url-pattern>/images/vcode.jpg</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+</web-app>

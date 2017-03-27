@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+	
+	<!-- 配置组件扫描，在子容器中只加载控制器组件 -->
+	<context:component-scan base-package="cn.bdqn.document.controller"/>
+	<!-- 配置注解驱动的MVC支持 -->
+	<mvc:annotation-driven/>
+	
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:prefix="/WEB-INF/view/"
+		p:suffix=".jsp"
+	/>
+	
+	<!-- 国际化资源 -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		p:basename="classpath:message"
+		p:defaultEncoding="utf-8"
+		p:cacheSeconds="60"
+	/>
+	
+	<!-- 文件上传解析器 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		p:maxUploadSize="-1"
+		p:maxInMemorySize="512000"
+		p:defaultEncoding="utf-8"
+	/>
+	
+	
+	
+	
+</beans>
+
+

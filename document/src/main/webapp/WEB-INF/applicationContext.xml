@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+	
+	<!-- 组件扫描，要排除掉添加了@Controller注解的控制器类-->
+	<context:component-scan base-package="cn.bdqn.document">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<!--基于注解的声明式事务-->
+	<tx:annotation-driven/>
+	
+	<!-- 属性占位符配置器 -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="${jdbc.driver_class}"
+		p:url="${jdbc.url}"
+		p:username="${jdbc.user_name}"
+		p:password="${jdbc.password}"
+	/>
+	
+	<!-- 配置MyBatis的SqlSession工厂 -->
+	<bean id="sqlSessionFacotry" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="typeAliasesPackage" value="cn.bdqn.document.entity"/>
+		<property name="mapperLocations" value="classpath:cn/bdqn/document/dao/*.xml"/>
+		<property name="plugins">
+			<list>
+				<bean class="cn.bdqn.mybatis.plugin.PaginationInterceptor">
+					<property name="properties">
+						<props>
+							<prop key="dialectClass">cn.bdqn.mybatis.plugin.MySQLDialect</prop>
+						</props>						
+					</property>
+				</bean>
+			</list>		
+		</property>
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="dataSource"
+	/>
+	
+	<!-- 动态生成查询接口实现类对象 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+		p:basePackage="cn.bdqn.document.dao"
+	/>
+
+	
+
+</beans>
+
+
+
+
+

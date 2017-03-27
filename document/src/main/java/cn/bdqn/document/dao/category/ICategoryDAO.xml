@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.document.dao.category.ICategoryDAO">
+
+	<insert id="saveCategory">
+		INSERT INTO category(scope,did,eid,name)
+		VALUES(#{scope},#{did},#{eid},#{name})	
+	</insert>
+	
+	<select id="findCategory" resultType="Category">
+		SELECT id,did,eid,scope,name FROM category
+		<where>
+			scope=#{scope}
+			<if test="did!=null">and did=#{did}</if>
+			<if test="eid!=null">and eid=#{eid}</if>
+			<if test="name!=null">and name LIKE #{name}</if>
+		</where>
+		ORDER BY id DESC
+	</select>
+
+</mapper>
+
+
+
+
+
